@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 //Import ripple component
 import Ripple from '../ripple';
 
+//Import results card
+import ResultsCard from '../results-card';
+
 //Import fetch library
 import fetchJsonp from 'fetch-jsonp';
 
@@ -15,6 +18,7 @@ class PostalCodeForm extends Component {
 		super();
 
 		this.state = {
+			postcode: '',
 			errors: {}
 		};
 	}
@@ -46,11 +50,12 @@ class PostalCodeForm extends Component {
 			return this.setState({ errors: { postcode: 'Did you make a mistake entering your postal code?' }});
 		}
 
-		fetchJsonp(`https://represent.opennorth.ca/postcodes/${postcode.toUpperCase()}`)
+		fetchJsonp(`https://represent.opennorth.ca/postcodes/${postcode.toUpperCase().replace(' ', '')}`)
 			.then(res => res.json())
 			.then(data => {
-				this.setState({ loading: false });
-				console.log(data);
+				//Yeah I learned something today!
+				const [ mp ] = data.representatives_centroid.filter(rep => rep.elected_office === 'MP');
+				this.setState({ loading: false, postcode: '', mp });
 			})
 			.catch(err => {
 				this.setState({ errors: { api: err.message }, loading: false });
@@ -86,8 +91,8 @@ class PostalCodeForm extends Component {
 								</svg>);
 		}
 
-		if (this.state.results !== undefined) {
-			resultCard = (<div></div>);
+		if (this.state.mp !== undefined) {
+			resultCard = (<ResultsCard mp={this.state.mp} />);
 		}
 
 		return (
@@ -95,11 +100,11 @@ class PostalCodeForm extends Component {
 				<h2>
 					Enter your postal code to find your MP!
 				</h2>
-				<input type='text' name='postcode' onInput={this.onInput} />
+				<input type='text' name='postcode' placeholder='Postal Code' value={this.state.postcode} onChange={this.onInput} />
 				<p className='rch-form-error'>{this.state.errors.postcode}</p>
 				{button}
 				<p className='rch-form-error'>{this.state.errors.api}</p>
-				<p className='rch-form-success'>{this.state.errors.api}</p>
+				{resultCard}
 			</form>
 		);
 	}
