@@ -37,7 +37,7 @@ class PostalCodeForm extends Component {
 			event.preventDefault();
 		}
 
-		this.setState({ errors: {}, loading: true });
+		this.setState({ errors: {}, mp: null, loading: true });
 
 		const postcode = this.state.postcode;
 
@@ -91,7 +91,7 @@ class PostalCodeForm extends Component {
 								</svg>);
 		}
 
-		if (this.state.mp !== undefined) {
+		if (this.state.mp !== undefined && this.state.mp !== null) {
 			resultCard = (<ResultsCard mp={this.state.mp} />);
 		}
 
