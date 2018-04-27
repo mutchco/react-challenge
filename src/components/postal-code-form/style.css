@@ -29,9 +29,24 @@
 	color: #84817a;
 }
 
+.rch-form button {
+	padding: 8px 64px;
+	background: #10ac84;
+	border-radius: 4px;
+	font-family: inherit;
+	color: #FAFAFA;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	transition: background 0.2s ease-in;
+}
+
+.rch-form button:hover {
+	background: rgba(16, 172, 132, 0.9);
+}
+
 /*Would normally be a sass variable*/
 .rch-form-error {
 	margin: 0;
 	color: #e74c3c;
 	font-size: 14px;
+	margin: 0 0 8px 0;
 }

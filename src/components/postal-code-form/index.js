@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+//Import ripple component
+import Ripple from '../ripple';
+
 //Import fetch library
 import fetchJsonp from 'fetch-jsonp';
 
@@ -30,6 +33,8 @@ class PostalCodeForm extends Component {
 			event.preventDefault();
 		}
 
+		this.setState({ errors: {}, loading: true });
+
 		const postcode = this.state.postcode;
 
 		if (!postcode) {
@@ -44,15 +49,46 @@ class PostalCodeForm extends Component {
 		fetchJsonp(`https://represent.opennorth.ca/postcodes/${postcode.toUpperCase()}`)
 			.then(res => res.json())
 			.then(data => {
+				this.setState({ loading: false });
 				console.log(data);
 			})
 			.catch(err => {
-				console.log(err);
+				this.setState({ errors: { api: err.message }, loading: false });
 			});
 	};
 
 	//Render method, returns html for post code form component
 	render() {
+
+		let resultCard = null;
+		let button = (<button type='submit'>
+										<Ripple />
+										Go
+									</button>);
+
+		if (this.state.loading === true) {
+			//By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL
+			button = (<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#10ac84">
+								    <g fill="none" fillRule="evenodd">
+								        <g transform="translate(1 1)" strokeWidth="2">
+								            <circle strokeOpacity=".5" cx="18" cy="18" r="18"/>
+								            <path d="M36 18c0-9.94-8.06-18-18-18">
+								                <animateTransform
+								                    attributeName="transform"
+								                    type="rotate"
+								                    from="0 18 18"
+								                    to="360 18 18"
+								                    dur="1s"
+								                    repeatCount="indefinite"/>
+								            </path>
+								        </g>
+								    </g>
+								</svg>);
+		}
+
+		if (this.state.results !== undefined) {
+			resultCard = (<div></div>);
+		}
 
 		return (
 			<form className="rch-form" onSubmit={this.onFormSubmit}>
@@ -61,8 +97,9 @@ class PostalCodeForm extends Component {
 				</h2>
 				<input type='text' name='postcode' onInput={this.onInput} />
 				<p className='rch-form-error'>{this.state.errors.postcode}</p>
-				<button type='submit'>Go</button>
+				{button}
 				<p className='rch-form-error'>{this.state.errors.api}</p>
+				<p className='rch-form-success'>{this.state.errors.api}</p>
 			</form>
 		);
 	}
