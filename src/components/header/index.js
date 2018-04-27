@@ -11,9 +11,9 @@ class Header extends Component {
 	//Render method, returns html for the app header
 	render() {
 		return (
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<h1 className="App-title">React Tech Challenge</h1>
+			<header className="rch-header">
+				<img src={logo} className="rch-logo" alt="logo" />
+				<h1 className="rch-title">React Tech Challenge</h1>
 			</header>
 		);
 	}

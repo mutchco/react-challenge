@@ -1,15 +1,37 @@
-.App-intro {
-  font-size: large;
-
-  max-width: 50%;
+.rch-form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.rch-form h2 {
+	margin: 16px 0;
+	padding: 0 16px;
+	font-weight: 400;
+	text-align: center;
+}
+
 .rch-form button,
 .rch-form input {
-	border: 1px solid blue;
+	font-family: inherit;
+	border: none;
 	background: none;
 	outline: none !important;
+}
+
+.rch-form input {
+	width: calc(100% - 32px);
+	max-width: 480px;
+	margin: 16px;
+	padding: 2px 0;
+	border-bottom: 2px solid #84817a;
+	font-size: 16px;
+	color: #84817a;
+}
+
+/*Would normally be a sass variable*/
+.rch-form-error {
+	margin: 0;
+	color: #e74c3c;
+	font-size: 14px;
 }
